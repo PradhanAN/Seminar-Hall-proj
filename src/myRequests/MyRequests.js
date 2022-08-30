@@ -174,12 +174,12 @@ export default function CollapsibleTable() {
       <Table aria-label="collapsible table" sx={{backgroundColor:"black"}} >
         <TableHead>
           <TableRow>
-            <TableCell align="center"  sx={{color:"white"}}>TIMINGS</TableCell>
-            <TableCell align="center"  sx={{color:"white"}}>CAPACITY</TableCell>
-            <TableCell align="center"  sx={{color:"white"}} >DESCRIPTION </TableCell>
-            <TableCell align="center"  sx={{color:"white"}}>Preference 1</TableCell>
-            <TableCell align="center"  sx={{color:"white"}}>Preference 2</TableCell>
-            <TableCell align="center"  sx={{color:"white"}}>Preference 3</TableCell>
+            <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}}>TIMINGS</TableCell>
+            <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}}>CAPACITY</TableCell>
+            <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}} >DESCRIPTION </TableCell>
+            <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}}>Preference 1</TableCell>
+            <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}}>Preference 2</TableCell>
+            <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}}>Preference 3</TableCell>
           </TableRow>
         </TableHead>
         <TableBody >

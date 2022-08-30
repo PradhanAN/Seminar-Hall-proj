@@ -1,0 +1,25 @@
+
+.swiper {
+ 
+  padding-top: 50px;
+  padding-bottom: 50px;
+ 
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 400px;
+}
+
+
+span.swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background-color: rgba(255, 255, 255, 0.815);
+    opacity: 1;
+  }
+  
+  span.swiper-pagination-bullet {
+    background-color:rgba(82, 80, 80, 0.795);
+    opacity: 1;
+  }
+

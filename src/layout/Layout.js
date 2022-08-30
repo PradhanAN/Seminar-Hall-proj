@@ -8,7 +8,7 @@ function Layout() {
   return (
     <>
       <Base>
-        <Text />
+        <Text text="Our Seminar Halls"/>
         <ItemList />
         <Options />
       </Base>

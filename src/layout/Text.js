@@ -2,7 +2,7 @@ import React from 'react'
 import './Text.css';
 import { Typography } from "@mui/material";
 
-export default function text() {
+export default function text(props) {
     return (
         <div className="title">
         <Typography
@@ -14,7 +14,7 @@ export default function text() {
             
           }}
         >
-          Our Seminar Halls
+          {props.text}
         </Typography>
       </div>
     )

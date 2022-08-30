@@ -11,10 +11,11 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import './NavBar.css';
 
-const pages = ["Request Booking", "My Requests", "LogOut"];
-const settings = ["Request Booking", "My Requests", "LogOut"];
 
-const ResponsiveAppBar = () => {
+
+const Navbar = () => {
+  const pages = ["Request Booking", "My Requests", "LogOut"];
+const settings = ["Request Booking", "My Requests", "LogOut"];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -182,4 +183,4 @@ const ResponsiveAppBar = () => {
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+export default Navbar;

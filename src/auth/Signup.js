@@ -17,7 +17,7 @@ const Signup = () => {
     setValue,
   } = useForm();
 
-  const [{ error, success }, setStatus] = useState({
+  const [values, setStatus] = useState({
     error: "",
     success: false,
   });
@@ -30,7 +30,7 @@ const Signup = () => {
   //   success: false,
   // });
 
-  // const { name, email, password, error, success } = values;
+  const {error, success } = values;
 
   // const handleChange = (name) => (event) => {
   //   setValues({ ...values, error: false, [name]: event.target.value });
@@ -110,6 +110,7 @@ const Signup = () => {
 
         <input
           placeholder="Phone Number"
+          autocomplete="off"
           type="number"
           {...register("phone_number", { required: "* Phone No. is required" })}
         />
@@ -118,7 +119,7 @@ const Signup = () => {
         <FormControl sx={{ marginBottom: "25px", marginTop:"15px"}}>
           <InputLabel
             id="demo-simple-select-helper-label"
-            sx={{ color: "#747474c0" }}
+            sx={{ color: "#747474e5" }}
           >
             Branch
           </InputLabel>

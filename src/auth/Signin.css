@@ -1,6 +1,6 @@
 
 
-.signup-form{
+.signin-form{
     /* display:flex;
     flex-direction:column;
     justify-content:space-between; */
@@ -18,7 +18,7 @@
     margin:10px;
 }
 
-.signup-form input{
+.signin-form input{
     background:none;
     border:2px solid white;
     border-radius:12px;
@@ -34,13 +34,13 @@
 
 }
 
-.signup-form input:focus{
+.signin-form input:focus{
     width:350px;
     border:2px solid white;
     outline:none;
 }
 
-.signup-form button{
+.signin-form button{
     background:none;
     -webkit-border-radius: 6;
     -moz-border-radius: 6;
@@ -58,20 +58,20 @@
     margin-top: 30px;
 }
   
-  .signup-form button:hover {
+  .signin-form button:hover {
     background:none;
     text-decoration: none;
     width:220px;
   }
 
-  .signup-form input[type=number]::-webkit-inner-spin-button, 
-  .signup-form input[type=number]::-webkit-outer-spin-button { 
+  .signin-form input[type=number]::-webkit-inner-spin-button, 
+  .signin-form input[type=number]::-webkit-outer-spin-button { 
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       margin: 0; 
   }
 
-  .signup-form p{
+  .signin-form p{
     color:rgba(255, 74, 74, 0.849);
   }

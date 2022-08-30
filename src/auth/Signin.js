@@ -1,42 +1,83 @@
 import React, { useState } from "react";
-import Base from "../base/Base";
 import { Link, Redirect } from "react-router-dom";
 import { signin, authenticate, isAutheticated } from "../helper";
 
-const Signin = () => {
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-    error: "",
-    loading: false,
-    didRedirect: false
-  });
+import { Typography } from "@mui/material";
+import "./Signin.css";
+import { useForm } from "react-hook-form";
 
-  const { email, password, error, loading, didRedirect } = values;
+
+
+const Signin = () => {
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+  } = useForm();
+
+  const [values, setStatus] = useState({error:"",loading:false,didRedirect:false});
+
+  // const [values, setValues] = useState({
+  //   email: "",
+  //   password: "",
+  //   error: "",
+  //   loading: false,
+  //   didRedirect: false
+  // });
+
+  const {error, loading, didRedirect } = values;
   const { user } = isAutheticated();
 
-  const handleChange = name => event => {
-    setValues({ ...values, error: false, [name]: event.target.value });
+  // const handleChange = name => event => {
+  //   setValues({ ...values, error: false, [name]: event.target.value });
+  // };
+
+  // const onSubmit = event => {
+  //   event.preventDefault();
+  //   setValues({ ...values, error: false, loading: true });
+    // signin({ email, password })
+    //   .then(data => {
+    //     if (data.error) {
+    //       setValues({ ...values, error: data.error, loading: false });
+    //     } else {
+    //       authenticate(data, () => {
+    //         setValues({
+    //           ...values,
+    //           didRedirect: true
+    //         });
+    //       });
+    //     }
+    //   })
+    //   .catch(console.log("signin request failed"));
+  // };
+
+  const onSubmit = (doc, event) => {
+    event.preventDefault();
+
+    console.log(doc);
+
+    signin(doc)
+    .then(data => {
+      if (data.error) {
+        setStatus({...values, error:data.error, loading:false});
+      } else {
+        authenticate(data, () => {
+          setStatus({
+            ...values,
+            didRedirect: true
+          });
+          setValue("email", "");
+          setValue("password", "");
+        });
+      }
+    })
+    .catch(console.log("signin request failed"));
+
   };
 
-  const onSubmit = event => {
-    event.preventDefault();
-    setValues({ ...values, error: false, loading: true });
-    signin({ email, password })
-      .then(data => {
-        if (data.error) {
-          setValues({ ...values, error: data.error, loading: false });
-        } else {
-          authenticate(data, () => {
-            setValues({
-              ...values,
-              didRedirect: true
-            });
-          });
-        }
-      })
-      .catch(console.log("signin request failed"));
-  };
+
 
   const performRedirect = () => {
     //TODO: do a redirect here
@@ -77,47 +118,53 @@ const Signin = () => {
     );
   };
 
+
   const signInForm = () => {
     return (
-      <div className="row">
-        <div className="col-md-6 offset-sm-3 text-left">
-          <form>
-            <div className="form-group">
-              <label className="text-light">Email</label>
-              <input
-                onChange={handleChange("email")}
-                value={email}
-                className="form-control"
-                type="email"
-              />
-            </div>
+     <form onSubmit={handleSubmit(onSubmit)} className="signin-form">
+        <Typography
+          variant="h3"
+          sx={{ color: "white", fontFamily: "Ubuntu", margin: "22px auto" }}
+        >
+          Sign In
+        </Typography>
 
-            <div className="form-group">
-              <label className="text-light">Password</label>
-              <input
-                onChange={handleChange("password")}
-                value={password}
-                className="form-control"
-                type="password"
-              />
-            </div>
-            <button onClick={onSubmit} className="btn btn-success btn-block">
-              Submit
+
+        <input
+          placeholder="Email"
+          autocomplete="off"
+          // onChange={handleChange("email")}
+          type="email"
+          // value={email}
+
+          {...register("email", { required: "* Email is required" })}
+        />
+        <p>{errors.email?.message}</p>
+
+        <input
+          placeholder="Password"
+          autocomplete="off"
+          type="password"
+          {...register("password", { required: "* Password is required" })}
+        />
+        <p>{errors.password?.message}</p>
+
+            <button type="submit">
+              Sign In
             </button>
           </form>
-        </div>
-      </div>
+
     );
   };
 
   return (
-    <Base title="Sign In page" description="A page for user to sign in!">
+    <>
       {loadingMessage()}
       {errorMessage()}
       {signInForm()}
       {performRedirect()}
-      <p className="text-white text-center">{JSON.stringify(values)}</p>
-    </Base>
+      {/* <p className="text-white text-center">{JSON.stringify(values)}</p> */}
+    </>
   );
 };
 

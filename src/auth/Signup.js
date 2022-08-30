@@ -1,102 +1,241 @@
 import React, { useState } from "react";
-import Base from "../base/Base";
 import { Link } from "react-router-dom";
 import { signup } from "../helper";
-import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
-import { Box, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { InputLabel, Typography } from "@mui/material";
 import "./Signup.css";
-import { Input } from "@material-ui/core";
+import { useForm } from "react-hook-form";
 
-
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const Signup = () => {
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+  } = useForm();
+
+  const [{ error, success }, setStatus] = useState({
     error: "",
     success: false,
   });
 
-  const { name, email, password, error, success } = values;
+  // const [values, setValues] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  //   error: "",
+  //   success: false,
+  // });
 
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, error: false, [name]: event.target.value });
-  };
+  // const { name, email, password, error, success } = values;
 
-  const onSubmit = (event) => {
+  // const handleChange = (name) => (event) => {
+  //   setValues({ ...values, error: false, [name]: event.target.value });
+  // };
+
+  // const onSubmit = (event) => {
+  //   event.preventDefault();
+  //   setValues({ ...values, error: false });
+  // signup({ name, email, password })
+  //   .then((data) => {
+  //     if (data.error) {
+  //       setValues({ ...values, error: data.error, success: false });
+  //     } else {
+  //       setValues({
+  //         ...values,
+  //         name: "",
+  //         email: "",
+  //         password: "",
+  //         error: "",
+  //         success: true,
+  //       });
+  //     }
+  //   })
+  //   .catch(console.log("Error in signup"));
+  // };
+
+  const onSubmit = (doc, event) => {
     event.preventDefault();
-    setValues({ ...values, error: false });
-    signup({ name, email, password })
+
+    console.log(doc);
+
+    signup(doc)
       .then((data) => {
         if (data.error) {
-          setValues({ ...values, error: data.error, success: false });
+          setStatus({ error: data.error, success: false });
         } else {
-          setValues({
-            ...values,
-            name: "",
-            email: "",
-            password: "",
-            error: "",
-            success: true,
-          });
+          setValue("name", "");
+          setValue("email", "");
+          setValue("password", "");
+          setValue("phone_number", "");
+          setValue("user_category", "");
+          setStatus({ error: "", success: true });
         }
       })
       .catch(console.log("Error in signup"));
   };
 
   const signUpForm = () => {
-    return (
-      
-        
-        <form className="signup-form">
+    // const onSubmit = (data) => console.log(data);
 
+    return (
+      <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
         <Typography
           variant="h3"
-          sx={{ color: "white", fontFamily: "Ubuntu", margin: "20px auto" }}
+          sx={{ color: "white", fontFamily: "Ubuntu", margin: "22px auto" }}
         >
           Sign Up
         </Typography>
-        
-          <input
-            placeholder="Name"
-            onChange={handleChange("name")}
-            value={name}
-            required={true}
-          />
+
+        <input
+          placeholder="Name"
+          autocomplete="off"
+          {...register("name", { required: "* Name is required" })}
+        />
+        <p>{errors.name?.message}</p>
+
+        <input
+          placeholder="Email"
+          autocomplete="off"
+          // onChange={handleChange("email")}
+          type="email"
+          // value={email}
+
+          {...register("email", { required: "* Email is required" })}
+        />
+        <p>{errors.email?.message}</p>
+
+        <input
+          placeholder="Phone Number"
+          type="number"
+          {...register("phone_number", { required: "* Phone No. is required" })}
+        />
+        <p>{errors.phone_number?.message}</p>
+
+        <FormControl sx={{ marginBottom: "25px", marginTop:"15px"}}>
+          <InputLabel
+            id="demo-simple-select-helper-label"
+            sx={{ color: "#747474c0" }}
+          >
+            Branch
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            label="Branch"
+            inputProps={{
+              ...register("branch")
+            }}
           
+            sx={{
+              color: "white",
+              borderRadius: "14px",
 
-          <input
-            placeholder="Email"
-            onChange={handleChange("email")}
-            type="email"
-            value={email}
-            required={true}
-          />
+              width: "300px",
+              height: "52px",
+              transition: "0.25s",
+              ".MuiOutlinedInput-notchedOutline": {
+                borderColor: "white",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "white",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "white",
+              },
+              ".MuiSvgIcon-root ": {
+                fill: "white",
+              },
+            }}
+          >
+            <MenuItem value={"NONE"}>NONE</MenuItem>
+            <MenuItem value={"CSE"}>CSE</MenuItem>
+            <MenuItem value={"ISE"}>ISE</MenuItem>
+            <MenuItem value={"ECE"}>ECE</MenuItem>
+            <MenuItem value={"ACE"}>ACE</MenuItem>
+            <MenuItem value={"EEE"}>EEE</MenuItem>
+            <MenuItem value={"ETE"}>ETE</MenuItem>
+            <MenuItem value={"EIE"}>EIE</MenuItem>
+            <MenuItem value={"MECHANICAL"}>MECHANICAL</MenuItem>
+            <MenuItem value={"CIVIL"}>CIVIL</MenuItem>
+            <MenuItem value={"BIOTECH"}>BIOTECH</MenuItem>
+            <MenuItem value={"IEM"}>IEM</MenuItem>
+            <MenuItem value={"CHEMICAL"}>CHEMICAL</MenuItem>
+          </Select>
+        </FormControl>
 
-          <input
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={handleChange("password")}
-            required={true}
-          />
 
-          <button onClick={onSubmit}>SignUp</button>
-        </form>
+        <FormControl sx={{marginBottom: "25px", marginTop:"15px" }}>
+          <InputLabel
+            id="demo-simple-select-helper-label"
+            sx={{ color: "#747474c0" }}
+          >
+            Select Category
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            label="Select Category"
+            inputProps={{
+              ...register("user_category", { required: "* Category is required" })
+            }}
+            sx={{
+              color: "white",
+              borderRadius: "14px",
 
+              width: "300px",
+              height: "52px",
+              transition: "0.25s",
+              ".MuiOutlinedInput-notchedOutline": {
+                borderColor: "white",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "white",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "white",
+              },
+              ".MuiSvgIcon-root ": {
+                fill: "white",
+              },
+            }}
+          >
+            <MenuItem value=""><em>NONE</em></MenuItem>
+            <MenuItem value={"STUDENT"}>STUDENT</MenuItem>
+            <MenuItem value={"TEACHER"}>TEACHER</MenuItem>
+            <MenuItem value={"OTHER"}>OTHER</MenuItem>
+            
+          </Select>
+        </FormControl>
+        <p>{errors.user_category?.message}</p>
+
+        <input
+          placeholder="Password"
+          type="password"
+          autocomplete="off"
+          {...register("password", {
+            required: "* Password is required",
+            minLength: {
+              value: 6,
+              message: "* Password must be atleast 6 characters long!",
+            },
+          })}
+        />
+        <p>{errors.password?.message}</p>
+
+        <button type="submit">SignUp</button>
+      </form>
     );
   };
 
   const successMessage = () => {
     return (
-      <div className="row">
-        <div className="col-md-6 offset-sm-3 text-left">
-          <div
-            className="alert alert-success"
-            style={{ display: success ? "" : "none" }}
-          >
+      <div>
+        <div>
+          <div style={{ display: success ? "" : "none" }}>
             New account was created successfully. Please
             <Link to="/signin">Login Here</Link>
           </div>
@@ -107,28 +246,20 @@ const Signup = () => {
 
   const errorMessage = () => {
     return (
-      <div className="row">
-        <div className="col-md-6 offset-sm-3 text-left">
-          <div
-            className="alert alert-danger"
-            style={{ display: error ? "" : "none" }}
-          >
-            {error}
-          </div>
+      <div>
+        <div>
+          <div style={{ display: error ? "" : "none" }}>{error}</div>
         </div>
       </div>
     );
   };
 
   return (
-    // <Base title="Sign up page" description="A page for user to sign up!">
     <>
       {successMessage()}
       {errorMessage()}
       {signUpForm()}
-      {/* <p className="text-white text-center">{JSON.stringify(values)}</p> */}
     </>
-    // </Base>
   );
 };
 

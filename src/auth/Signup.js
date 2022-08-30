@@ -64,6 +64,7 @@ const Signup = () => {
 
     signup(doc)
       .then((data) => {
+        console.log(data)
         if (data.error) {
           setStatus({ error: data.error, success: false });
         } else {
@@ -75,7 +76,9 @@ const Signup = () => {
           setStatus({ error: "", success: true });
         }
       })
-      .catch(console.log("Error in signup"));
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const signUpForm = () => {

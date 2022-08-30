@@ -15,11 +15,14 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
+    phone_number: "",
+    branch: "",
+    user_category: "",
     error: "",
     success: false,
   });
 
-  const { name, email, password, error, success } = values;
+  const { name, email, password, phone_number, user_category, branch, error, success } = values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, error: false, [name]: event.target.value });
@@ -28,8 +31,10 @@ const Signup = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: false });
-    signup({ name, email, password })
+    console.log(values);
+    signup({ name, email, password, phone_number, user_category, branch })
       .then((data) => {
+        console.log(data)
         if (data.error) {
           setValues({ ...values, error: data.error, success: false });
         } else {
@@ -38,19 +43,24 @@ const Signup = () => {
             name: "",
             email: "",
             password: "",
+            phone_number: "",
+            user_category: "",
+            branch: "",
             error: "",
             success: true,
           });
         }
       })
-      .catch(console.log("Error in signup"));
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const signUpForm = () => {
     return (
-      
-        
-        <form className="signup-form">
+
+
+      <form className="signup-form">
 
         <Typography
           variant="h3"
@@ -58,33 +68,51 @@ const Signup = () => {
         >
           Sign Up
         </Typography>
-        
-          <input
-            placeholder="Name"
-            onChange={handleChange("name")}
-            value={name}
-            required={true}
-          />
-          
 
-          <input
-            placeholder="Email"
-            onChange={handleChange("email")}
-            type="email"
-            value={email}
-            required={true}
-          />
+        <input
+          placeholder="Name"
+          onChange={handleChange("name")}
+          value={name}
+          required={true}
+        />
 
-          <input
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={handleChange("password")}
-            required={true}
-          />
 
-          <button onClick={onSubmit}>SignUp</button>
-        </form>
+        <input
+          placeholder="Email"
+          onChange={handleChange("email")}
+          type="email"
+          value={email}
+          required={true}
+        />
+
+        <input
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={handleChange("password")}
+          required={true}
+        />
+        <input
+          placeholder="Phone Number"
+          value={phone_number}
+          onChange={handleChange("phone_number")}
+          required={true}
+        />
+        <input
+          placeholder="Branch"
+          value={branch}
+          onChange={handleChange("branch")}
+          required={true}
+        />
+        <input
+          placeholder="student/teacher"
+          value={user_category}
+          onChange={handleChange("user_category")}
+          required={true}
+        />
+
+        <button onClick={onSubmit}>SignUp</button>
+      </form>
 
     );
   };
@@ -122,12 +150,13 @@ const Signup = () => {
 
   return (
     // <Base title="Sign up page" description="A page for user to sign up!">
-    <>
+    <div>
       {successMessage()}
       {errorMessage()}
       {signUpForm()}
-      {/* <p className="text-white text-center">{JSON.stringify(values)}</p> */}
-    </>
+      <p className="text-white text-center">{JSON.stringify(values)}</p>
+      <p>hi</p>
+    </div>
     // </Base>
   );
 };

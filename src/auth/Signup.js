@@ -119,7 +119,7 @@ const Signup = () => {
         />
         <p>{errors.phone_number?.message}</p>
 
-        <FormControl sx={{ marginBottom: "25px", marginTop:"15px"}}>
+        <FormControl sx={{ marginBottom: "17px", marginTop:"8px"}}>
           <InputLabel
             id="demo-simple-select-helper-label"
             sx={{ color: "#747474e5" }}
@@ -172,7 +172,7 @@ const Signup = () => {
         </FormControl>
 
 
-        <FormControl sx={{marginBottom: "25px", marginTop:"15px" }}>
+        <FormControl sx={{marginBottom: "12px", marginTop:"8px" }}>
           <InputLabel
             id="demo-simple-select-helper-label"
             sx={{ color: "#747474c0" }}
@@ -191,7 +191,7 @@ const Signup = () => {
               borderRadius: "14px",
 
               width: "300px",
-              height: "52px",
+              height: "50px",
               transition: "0.25s",
               ".MuiOutlinedInput-notchedOutline": {
                 borderColor: "white",

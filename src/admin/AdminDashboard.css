@@ -1,0 +1,38 @@
+.user-request-table-container {
+  padding: 1rem;
+  border: 2px solid white;
+  border-radius: 24px;
+  width: 90%;
+  margin: auto;
+  margin-top: 3rem;
+}
+
+ {
+}
+
+.admin-buttons button {
+  background: #000000;
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: "Ubuntu";
+
+  font-size: 20px;
+  padding: 10px 30px 10px 30px;
+
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.admin-buttons .approve {
+  color: #00ff6f;
+  border: solid #00ff6f 2px;
+  margin:3% 5%;
+}
+
+.admin-buttons .decline {
+  color: #d40000;
+  border: solid #d40000 2px;
+  margin:3% 5%;
+}

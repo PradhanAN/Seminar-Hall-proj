@@ -32,8 +32,8 @@ const rows = [
     capacity: "200",
     description: "second-for-testing",
     dates: ["2002-12-09", "2022-12-09", "2032-12-09"],
-    fromtimes: ["2002-12-09T12:00", "2022-12-09T13:00", "2032-12-09T18:00"],
-    totimes: ["2002-12-09T13:00", "2022-12-09T14:30", "2032-12-09T20:00"],
+    fromtimes: ["2002-12-09T13:00", "2022-12-09T14:00", "2032-12-09T18:00"],
+    totimes: ["2002-12-09T13:00", "2022-12-09T14:30", "2032-12-09T19:00"],
     preference_1: "mechanical seminar hall",
     preference_2: "civil seminar hall",
     preference_3: "cse seminar hall"
@@ -131,8 +131,8 @@ function Row(props) {
                       <TableCell component="th" scope="row" align="center"  sx={{color:"white"}}>
                         {new Date(timing.date).toLocaleDateString("en-US", options)}
                       </TableCell>
-                      <TableCell align="center"  sx={{color:"white"}}>{new Date(timing.from).toLocaleString('en-US', { hour: 'numeric', hour12: true })}</TableCell>
-                      <TableCell align="center"  sx={{color:"white"}}>{new Date(timing.to).toLocaleString('en-US', { hour: 'numeric', hour12: true })}</TableCell>
+                      <TableCell align="center"  sx={{color:"white"}}>{new Date(timing.from).toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true })}</TableCell>
+                      <TableCell align="center"  sx={{color:"white"}}>{new Date(timing.to).toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true })}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -172,7 +172,7 @@ export default function CollapsibleTable() {
     <div className='request-table-container'>
     <TableContainer component={Paper} >
       <Table aria-label="collapsible table" sx={{backgroundColor:"black"}} >
-        <TableHead>
+        <TableHead >
           <TableRow>
             <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}}>TIMINGS</TableCell>
             <TableCell align="center"  sx={{color:"white", fontSize:"1.3em"}}>CAPACITY</TableCell>

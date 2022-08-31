@@ -5,6 +5,7 @@ import Signup from "./auth/Signup";
 import Signin from "./auth/Signin";
 import MyRequests from './myRequests/MyRequests';
 import AdminDashboard from './admin/AdminDashboard';
+import Request from './requestBooking/Request';
 
 const Routes = () => {
   return (
@@ -15,6 +16,7 @@ const Routes = () => {
         <Route path="/signin" exact component={Signin} />
         <Route path="/myRequests" exact component={MyRequests} />
         <Route path="/adminDashboard" exact component={AdminDashboard} />
+        <Route path="/request" exact component={Request} />
       </Switch>
     </BrowserRouter>
   );

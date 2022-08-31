@@ -13,7 +13,7 @@ import './NavBar.css';
 
 
 
-const Navbar = () => {
+const Navbar = (props) => {
   const pages = ["Request Booking", "My Requests", "LogOut"];
 const settings = ["Request Booking", "My Requests", "LogOut"];
   const [anchorElNav, setAnchorElNav] = React.useState(null);

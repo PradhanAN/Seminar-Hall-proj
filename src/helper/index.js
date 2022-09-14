@@ -1,4 +1,5 @@
 import { API } from "../backend";
+const axios = require('axios').default;
 
 export const signup = user => {
   console.log(user)
@@ -91,3 +92,15 @@ export const submitRequest = (userId, token, requestData) => {
     })
     .catch(err => console.log(err));
 };
+
+export const getRequests = () => {
+  return axios.get(`${API}/requests`)
+    .then(function (response) {
+      // console.log(response.data);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  // return fetch(`${API}/requests`);
+}

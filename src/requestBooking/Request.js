@@ -12,14 +12,15 @@ import {
   LocalizationProvider,
   TimePicker,
 } from "@mui/x-date-pickers";
+import { isAutheticated, submitRequest } from "../helper";
 const renderDateTimes = (data) => {
-  
-  
+
+
 
   return data.map((entry) => {
     return (
       <>
-         
+
         <div key={entry.date} className="rendered-dates">
           <p><span>Date &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{entry.date.toDateString()}</p>
           <p><span>From &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -80,12 +81,23 @@ const Request = () => {
   }, [rawData]);
 
   const onSubmit = (data) => {
+    console.log(isAutheticated());
+    const userId = isAutheticated() && isAutheticated().user._id;
+    const token = isAutheticated() && isAutheticated().token;
+
     const curatedData = {
       ...data,
       date: currDate,
       dates: rawData,
     };
     console.log(curatedData);
+    submitRequest(userId, token, curatedData)
+      .then(data => {
+        if (data.error) {
+          console.log(data);
+        }
+      })
+      .catch(console.log("request failed to submit"));
   };
 
   return (
@@ -312,7 +324,7 @@ const Request = () => {
             // })}
             value={fromTime}
             onChange={(value) => setFromTime(value.$d)}
-            
+
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -341,13 +353,13 @@ const Request = () => {
                     fill: "white",
                   },
                   label: { color: "rgb(226, 226, 226)" },
-                  width:"300px",
-                 
+                  width: "300px",
+
                 }}
 
               />
             )}
-            
+
           />
         </Box>
 
@@ -391,25 +403,25 @@ const Request = () => {
                   },
                   label: { color: "rgb(226, 226, 226)" },
                 }}
-                
+
               />
             )}
           />
         </Box>
-       
+
       </LocalizationProvider>
 
-      
+
 
       <button className="add-date" onClick={dates}>
         Add Date +
       </button>
 
-      
+
 
       <hr />
 
-      
+
       <button type="submit">Submit</button>
     </form>
   );

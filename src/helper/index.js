@@ -61,3 +61,33 @@ export const isAutheticated = () => {
     return false;
   }
 };
+
+export const submitRequest = (userId, token, requestData) => {
+  console.log(userId, token, requestData);
+  let dates = [];
+  let fromtimes = [];
+  let totimes = [];
+  requestData.dates.forEach(function (item, index) {
+    dates.push(item.date);
+    fromtimes.push(item.fromTime);
+    totimes.push(item.toTime)
+  });
+  requestData.dates = dates;
+  requestData.fromtimes = fromtimes;
+  requestData.totimes = totimes;
+  requestData.date = undefined;
+  console.log(userId, token, requestData);
+  return fetch(`${API}/request/${userId}/submit`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(requestData)
+  })
+    .then(reponse => {
+      return reponse.json();
+    })
+    .catch(err => console.log(err));
+};

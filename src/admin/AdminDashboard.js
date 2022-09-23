@@ -22,6 +22,11 @@ import { useState } from "react";
 import Navbar from "../base/NavBar";
 import { getRequests } from "../helper";
 import { API } from "../backend";
+
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
+
+
 const axios = require('axios').default;
 
 const rows = [
@@ -400,52 +405,100 @@ function Row(props) {
 // };
 
 export default function AdminDashboard() {
+  window.gapi.load('client:auth2', () => {
+    window.gapi.client.init({
+      clientId: '431101491201-0hl2j7m281i9pt6dp6hk4fu9jbv9rkk3.apps.googleusercontent.com',
+      plugin_name: "chat"
+    })
+  })
+  const responseGoogle = (response) => {
+    console.log(response);
+    const { code } = response;
+    axios.post("/api/create-token", { code }).then(response => {
+      console.log(response.data);
+      setSignedIn(true);
+    }).catch(error => {
+      console.log(error.message);
+    })
+  }
+  const responseError = (error) => {
+    console.log(error);
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(summary, description, location, startDateTime, endDateTime);
+    axios.post("/api/create-event", { summary, description, location, startDateTime, endDateTime }).then(response => {
+      console.log(response.data);
+    }).catch(error => {
+      console.log(error.message);
+    })
+  }
+
+  const [signedIn, setSignedIn] = useState(false);
+  const [summary, setSummary] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
+
   return (
     <>
       <Navbar />
       <Text text="User Requests" />
-      <div className="user-request-table-container">
-        <TableContainer component={Paper}>
-          <Table
-            aria-label="collapsible table"
-            sx={{ backgroundColor: "black" }}
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  DETAILS
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  CAPACITY
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  DESCRIPTION
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  STATUS
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <Row key={row.capacity} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+      {
+        !signedIn ? (<div>
+          <GoogleLogin clientId='431101491201-0hl2j7m281i9pt6dp6hk4fu9jbv9rkk3.apps.googleusercontent.com'
+            buttonText='SignIn'
+            onSuccess={responseGoogle}
+            onFailure={responseError}
+            cookiePolicy={'single_host_origin'}
+            responseType="code"
+            accessType='offline'
+            scope='openid email profile https://www.googleapis.com/auth/calendar' />
+        </div>) : (<div className="user-request-table-container">
+          <TableContainer component={Paper}>
+            <Table
+              aria-label="collapsible table"
+              sx={{ backgroundColor: "black" }}
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    DETAILS
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    CAPACITY
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    DESCRIPTION
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    STATUS
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <Row key={row.capacity} row={row} />
+                ))}
+              </TableBody>
+
+            </Table>
+          </TableContainer>
+        </div>)
+      }
     </>
   );
 }

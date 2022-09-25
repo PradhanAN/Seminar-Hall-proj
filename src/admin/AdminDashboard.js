@@ -20,12 +20,20 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 import { useState } from "react";
 import Navbar from "../base/NavBar";
+import { getRequests } from "../helper";
+import { API } from "../backend";
+
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
+
+
+const axios = require('axios').default;
 
 const rows = [
   {
     capacity: "100",
     description: "first-for-testing",
-    status:"PENDING",
+    status: "PENDING",
 
     dates: ["2002-12-09", "2022-12-09", "2032-12-09"],
     fromtimes: ["2002-12-09T12:00", "2022-12-09T13:00", "2032-12-09T18:00"],
@@ -44,7 +52,7 @@ const rows = [
   {
     capacity: "200",
     description: "second-for-testing",
-    status:"APPROVED",
+    status: "APPROVED",
 
     dates: ["2002-12-09", "2022-12-09", "2032-12-09"],
     fromtimes: ["2002-12-09T13:00", "2022-12-09T13:00", "2032-12-09T18:00"],
@@ -62,7 +70,7 @@ const rows = [
   {
     capacity: "300",
     description: "third-for-testing",
-    status:"DECLINED",
+    status: "DECLINED",
 
     dates: ["2002-12-09", "2022-12-09", "2032-12-09"],
     fromtimes: ["2002-12-09T12:00", "2022-12-09T10:00", "2032-12-09T10:00"],
@@ -80,12 +88,12 @@ const rows = [
   {
     capacity: "400",
     description: "fourth-for-testing",
-    status:"PENDING",
+    status: "PENDING",
 
     dates: ["2002-12-09", "2022-12-09", "2032-12-09"],
     fromtimes: ["2002-12-09T12:00", "2022-12-09T13:00", "2032-12-09T17:00"],
     totimes: ["2002-12-09T15:00", "2022-12-09T16:30", "2032-12-09T20:00"],
- 
+
     preference_1: "bio seminar hall",
     preference_2: "ece seminar hall",
     preference_3: "cse seminar hall",
@@ -130,6 +138,7 @@ console.log(rows);
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
+  const getData = axios.get(`${API}/requests`).then(response => response.data);
 
   return (
     <React.Fragment>
@@ -194,31 +203,32 @@ function Row(props) {
                     <TableCell align="center" sx={{ color: "white" }}>
                       BRANCH
                     </TableCell>
-                   
+
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  
-                    <TableRow key={row.phone}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        align="center"
-                        sx={{ color: "white" }}
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>
-                       {row.email}
-                      </TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>
-                        {row.phone}
-                      </TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>
-                        {row.branch}
-                      </TableCell>
-                    </TableRow>
-                  
+
+                  <TableRow key={row.phone}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="center"
+                      sx={{ color: "white" }}
+                    >
+                      {row.name}
+                    </TableCell>
+                    {console.log(getData)}
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      {row.email}
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      {row.phone}
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      {row.branch}
+                    </TableCell>
+                  </TableRow>
+
                 </TableBody>
               </Table>
             </Box>
@@ -247,36 +257,36 @@ function Row(props) {
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center" sx={{ color: "white"}}>
+                    <TableCell align="center" sx={{ color: "white" }}>
                       One
                     </TableCell>
                     <TableCell align="center" sx={{ color: "white" }}>
-                    Two
+                      Two
                     </TableCell>
                     <TableCell align="center" sx={{ color: "white" }}>
-                    Three
+                      Three
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  
-                    <TableRow key={row.phone}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        align="center"
-                        sx={{ color: "white" }}
-                      >
-                        {row.preference_1}
-                      </TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>
+
+                  <TableRow key={row.phone}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="center"
+                      sx={{ color: "white" }}
+                    >
+                      {row.preference_1}
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
                       {row.preference_2}
-                      </TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
                       {row.preference_3}
-                      </TableCell>
-                    </TableRow>
-                  
+                    </TableCell>
+                  </TableRow>
+
                 </TableBody>
               </Table>
             </Box>
@@ -360,13 +370,13 @@ function Row(props) {
 
 
       <TableRow>
-        <TableCell align="center" style={{ paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+        <TableCell align="center" style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 6 }}>
-               <div className='admin-buttons'>
-                   <button className="approve"><TaskAltIcon sx={{marginRight:"6px"}}/>Approve</button>
-                   <button className="decline"><CancelOutlinedIcon sx={{marginRight:"6px"}}/>Decline</button>                   
-               </div>
+              <div className='admin-buttons'>
+                <button className="approve"><TaskAltIcon sx={{ marginRight: "6px" }} />Approve</button>
+                <button className="decline"><CancelOutlinedIcon sx={{ marginRight: "6px" }} />Decline</button>
+              </div>
             </Box>
           </Collapse>
         </TableCell>
@@ -395,52 +405,100 @@ function Row(props) {
 // };
 
 export default function AdminDashboard() {
+  window.gapi.load('client:auth2', () => {
+    window.gapi.client.init({
+      clientId: '431101491201-0hl2j7m281i9pt6dp6hk4fu9jbv9rkk3.apps.googleusercontent.com',
+      plugin_name: "chat"
+    })
+  })
+  const responseGoogle = (response) => {
+    console.log(response);
+    const { code } = response;
+    axios.post("/api/create-token", { code }).then(response => {
+      console.log(response.data);
+      setSignedIn(true);
+    }).catch(error => {
+      console.log(error.message);
+    })
+  }
+  const responseError = (error) => {
+    console.log(error);
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(summary, description, location, startDateTime, endDateTime);
+    axios.post("/api/create-event", { summary, description, location, startDateTime, endDateTime }).then(response => {
+      console.log(response.data);
+    }).catch(error => {
+      console.log(error.message);
+    })
+  }
+
+  const [signedIn, setSignedIn] = useState(false);
+  const [summary, setSummary] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
+
   return (
     <>
       <Navbar />
-      <Text text="User Requests"/>
-      <div className="user-request-table-container">
-        <TableContainer component={Paper}>
-          <Table
-            aria-label="collapsible table"
-            sx={{ backgroundColor: "black" }}
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  DETAILS
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  CAPACITY
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  DESCRIPTION
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "white", fontSize: "1.3em" }}
-                >
-                  STATUS
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <Row key={row.capacity} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+      <Text text="User Requests" />
+      {
+        !signedIn ? (<div>
+          <GoogleLogin clientId='431101491201-0hl2j7m281i9pt6dp6hk4fu9jbv9rkk3.apps.googleusercontent.com'
+            buttonText='SignIn'
+            onSuccess={responseGoogle}
+            onFailure={responseError}
+            cookiePolicy={'single_host_origin'}
+            responseType="code"
+            accessType='offline'
+            scope='openid email profile https://www.googleapis.com/auth/calendar' />
+        </div>) : (<div className="user-request-table-container">
+          <TableContainer component={Paper}>
+            <Table
+              aria-label="collapsible table"
+              sx={{ backgroundColor: "black" }}
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    DETAILS
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    CAPACITY
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    DESCRIPTION
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ color: "white", fontSize: "1.3em" }}
+                  >
+                    STATUS
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <Row key={row.capacity} row={row} />
+                ))}
+              </TableBody>
+
+            </Table>
+          </TableContainer>
+        </div>)
+      }
     </>
   );
 }

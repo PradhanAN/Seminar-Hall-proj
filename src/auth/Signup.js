@@ -30,7 +30,7 @@ const Signup = () => {
   //   success: false,
   // });
 
-  const {error, success } = values;
+  const { error, success } = values;
 
   // const handleChange = (name) => (event) => {
   //   setValues({ ...values, error: false, [name]: event.target.value });
@@ -119,7 +119,7 @@ const Signup = () => {
         />
         <p>{errors.phone_number?.message}</p>
 
-        <FormControl sx={{ marginBottom: "17px", marginTop:"8px"}}>
+        <FormControl sx={{ marginBottom: "17px", marginTop: "8px" }}>
           <InputLabel
             id="demo-simple-select-helper-label"
             sx={{ color: "#747474e5" }}
@@ -133,7 +133,7 @@ const Signup = () => {
             inputProps={{
               ...register("branch")
             }}
-          
+
             sx={{
               color: "white",
               borderRadius: "14px",
@@ -172,7 +172,7 @@ const Signup = () => {
         </FormControl>
 
 
-        <FormControl sx={{marginBottom: "12px", marginTop:"8px" }}>
+        <FormControl sx={{ marginBottom: "12px", marginTop: "8px" }}>
           <InputLabel
             id="demo-simple-select-helper-label"
             sx={{ color: "#747474c0" }}
@@ -208,10 +208,10 @@ const Signup = () => {
             }}
           >
             <MenuItem value=""><em>NONE</em></MenuItem>
-            <MenuItem value={"STUDENT"}>STUDENT</MenuItem>
-            <MenuItem value={"TEACHER"}>TEACHER</MenuItem>
+            <MenuItem value={"student"}>STUDENT</MenuItem>
+            <MenuItem value={"teacher"}>TEACHER</MenuItem>
             <MenuItem value={"OTHER"}>OTHER</MenuItem>
-            
+
           </Select>
         </FormControl>
         <p>{errors.user_category?.message}</p>

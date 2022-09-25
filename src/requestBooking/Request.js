@@ -52,8 +52,7 @@ const Request = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    getValues
+    formState: { errors }
   } = useForm();
 
   const dates = async (e) => {

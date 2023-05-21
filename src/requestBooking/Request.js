@@ -7,44 +7,22 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+
 import {
   DateTimePicker,
   LocalizationProvider,
   TimePicker,
 } from "@mui/x-date-pickers";
 import { isAutheticated, submitRequest } from "../helper";
-const renderDateTimes = (data) => {
+import { raw } from "body-parser";
+import { Redirect } from "react-router";
 
 
 
-  return data.map((entry) => {
-    return (
-      <>
-
-        <div key={entry.date} className="rendered-dates">
-          <p><span>Date &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{entry.date.toDateString()}</p>
-          <p><span>From &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {entry.fromTime.toLocaleString("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            })}
-          </p>
-          <p><span>To &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {entry.toTime.toLocaleString("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            })}
-          </p>
-        </div>
-        <hr></hr>
-      </>
-    );
-  });
-};
 
 const Request = () => {
+ let temp= 0;
   const currDate = new Date();
   const [fromTime, setFromTime] = useState(currDate);
   const [toTime, setToTime] = useState(currDate);
@@ -56,31 +34,105 @@ const Request = () => {
     formState: { errors }
   } = useForm();
 
+  const renderDateTimes = (data) => {
+  
+
+    return data.map((entry) => {
+      return (
+        <>
+          <div key={entry._id} className="rendered-dates">
+            
+            <p><span>Date &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{entry.date.toDateString()}</p>
+            <p><span>From &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {entry.fromTime.toLocaleString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
+            </p>
+            <p><span>To &nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {entry.toTime.toLocaleString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
+            </p>
+            
+            <button className="cancel-button" onClick = {(event)=>{removeDate(event,entry._id)}}><CancelOutlinedIcon sx={{ marginRight: "6px"}} />Cancel</button>
+          </div>
+          <hr></hr>
+        </>
+      );
+    });
+  };
+
+  const removeDate = async (e,id) => {
+    e.preventDefault();
+    const temp = rawData.filter((item)=>item._id!==id);
+    await setRawData(temp);
+  }
+
+
+
   const dates = async (e) => {
     e.preventDefault();
 
-    toTime.setFullYear(
-      fromTime.getFullYear(),
-      fromTime.getMonth(),
-      fromTime.getDate()
-    );
+    
+      toTime.setFullYear(
+        fromTime.getFullYear(),
+        fromTime.getMonth(),
+        fromTime.getDate()
+      );
+  
+      const currData = {
+        _id : Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36),
+        date: fromTime,
+        fromTime: fromTime,
+        toTime: toTime,
+      };
+      await setRawData([...rawData, currData]);
+    
 
-    const currData = {
-      date: fromTime,
-      fromTime: fromTime,
-      toTime: toTime,
-    };
-    await setRawData([...rawData, currData]);
+    
     // setRenderedDates(renderDateTimes(rawData));
   };
 
   useEffect(() => {
-    // console.log(rawData);
+    console.log("hello");
+    console.log(rawData);
     setRenderedDates(renderDateTimes(rawData));
+    
   }, [rawData]);
 
-  const onSubmit = (data) => {
-    console.log(isAutheticated());
+
+
+
+  const onSubmit = (data,e) => {
+   
+
+    e.preventDefault();
+    // let dateString = "";
+    // for (let i = 0; i < rawData.length; i++) {
+   
+    //   dateString += `Date : ${rawData[i].date.toDateString()} \nFrom : ${rawData[i].fromTime.toLocaleString("en-US", {
+    //     hour: "numeric",
+    //     minute: "numeric",
+    //     hour12: true,
+    //   })}\nTo : ${rawData[i].toTime.toLocaleString("en-US", {
+    //     hour: "numeric",
+    //     minute: "numeric",
+    //     hour12: true,
+    //   })}\n\n`
+    // }
+    
+    if(rawData.length===0){
+      alert("You haven't selected any dates");
+      return;
+    }
+    const answer = window.confirm(`Note : Only the dates displayed in YELLOW will be sent as requests. \n\nYou will be notified via email when the admin approves/declines your requests.\n\nAre you sure you want to submit?`);
+
+    if(answer){
+      console.log(isAutheticated());
     const userId = isAutheticated() && isAutheticated().user._id;
     const token = isAutheticated() && isAutheticated().token;
 
@@ -97,9 +149,22 @@ const Request = () => {
         }
       })
       .catch(console.log("request failed to submit"));
+
+      window.location.href='/';
+    }else{
+      console.log("wait");
+    }
+
+    
+    
+    
   };
 
+
+
+
   return (
+    (isAutheticated() && isAutheticated().user.role === 0) ? (
     <form onSubmit={handleSubmit(onSubmit)} className="request-form">
       <Typography
         variant="h3"
@@ -110,7 +175,7 @@ const Request = () => {
 
       <input
         placeholder="Capacity"
-        autocomplete="off"
+        autoComplete="off"
         type="number"
         {...register("capacity", { required: "* capacity is required" })}
       />
@@ -119,7 +184,7 @@ const Request = () => {
       <textarea
         rows="5"
         placeholder="Purpose of Booking :  "
-        autocomplete="off"
+        autoComplete="off"
         {...register("description", {
           required: "* Purpose of Booking is required",
         })}
@@ -422,7 +487,11 @@ const Request = () => {
 
 
       <button type="submit">Submit</button>
-    </form>
+    </form>) : (
+      <Redirect to={{
+        pathname : '/signin'
+    }}></Redirect>
+    )
   );
 };
 

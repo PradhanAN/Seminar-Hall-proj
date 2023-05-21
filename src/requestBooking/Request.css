@@ -107,3 +107,14 @@ hr {
 .rendered-dates {
   margin: 20px auto;
 }
+
+.cancel-button {
+  color: #d40000;
+  border: none;
+  background:none;
+  margin:0 auto;
+  cursor:pointer;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}

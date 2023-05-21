@@ -15,11 +15,11 @@ function Footer() {
           <MailOutlineOutlinedIcon
             sx={{ color: "white", marginRight: "1rem" }}
           />
-          <a href="#">Contact Developers</a>
+          <a href="https://www.linkedin.com/in/pradhan-a-n-026b54210/">Contact Developers</a>
         </div>
         <div>
           <LinkIcon sx={{ color: "white", marginRight: "1rem" }} />
-          <a href="#">RVCE Website</a>
+          <a href="https://www.rvce.edu.in/">RVCE Website</a>
         </div>
       </div>
 
@@ -42,7 +42,8 @@ function Footer() {
           />
           <MailOutlineOutlinedIcon sx={{ color: "white" }} />
         </div>
-        <a href="#">Contact Admin</a>
+        <a href="mailto:raghavendrac@rvce.edu.in">Contact Admin</a>
+        
       </div>
     </div>
   

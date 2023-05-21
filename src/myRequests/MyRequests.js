@@ -18,6 +18,13 @@ import Text from '../layout/Text';
 import { useState } from "react";
 import { API } from "../backend";
 import { isAutheticated } from "../helper";
+import { useEffect } from "react";
+
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import { Redirect } from "react-router";
+
+
 const axios = require('axios').default;
 
 const rows = [
@@ -86,16 +93,15 @@ for (let i = 0; i < rows.length; i++) {
 console.log(rows);
 
 
-
 function Row(props) {
-  const { row } = props;
+  const { data } = props;
   const [open, setOpen] = useState(false);
-  const userId = isAutheticated() && isAutheticated().user._id;
-  const token = isAutheticated() && isAutheticated().token;
-  const getData = axios.get(`${API}/requests/${userId}`).then(response => response.data);
+  
+  
+  
   return (
+    
     <React.Fragment>
-      {console.log(getData)}
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell align="center">
           <IconButton
@@ -107,71 +113,189 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row" align="center" sx={{ color: "white" }}>
-          {row.capacity}
+        <TableCell
+          component="th"
+          scope="row"
+          align="center"
+          sx={{ color: "white" }}
+        >
+          {data.capacity}
         </TableCell>
 
-        <TableCell align="center" sx={{ color: "white" }}>{row.description}</TableCell>
-        <TableCell align="center" sx={{ color: "white" }}>{row.preference_1}</TableCell>
-        <TableCell align="center" sx={{ color: "white" }}>{row.preference_2}</TableCell>
-        <TableCell align="center" sx={{ color: "white" }}>{row.preference_3}</TableCell>
+        <TableCell align="center" sx={{ color: "white" }}>
+          {data.description}
+        </TableCell>
+
+        <TableCell align="center" sx={{ color: data.approved==="true"?"rgb(0, 255, 64)": (data.approved==="false"?"rgb(255, 0, 0)":"rgb(255, 238, 0)") }}>
+          {data.approved==="pending" && "Pending"}
+          {data.approved==="true" && "Approved"}
+          {data.approved==="false" && "Declined"}
+        </TableCell>
+
+        <TableCell align="center" sx={{ color: "white" }}>
+          {data.approvedHall}
+        </TableCell>
       </TableRow>
-      <TableRow >
+
+
+      <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 6 }}>
-              <Typography variant="h6" gutterBottom component="div" sx={{ color: "white" }}>
-                Booking Timings
+              <Typography
+                variant="h6"
+                gutterBottom
+                component="div"
+                sx={{ color: "white" }}
+              >
+                Preferences
               </Typography>
-              <Table size="medium" sx={{ margin: "auto", width: "70%", align: "center" }}>
+              <Table
+                size="medium"
+                sx={{ margin: "auto", width: "70%", align: "center" }}
+              >
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center" sx={{ color: "white" }}>DATE</TableCell>
-                    <TableCell align="center" sx={{ color: "white" }}>FROM</TableCell>
-                    <TableCell align="center" sx={{ color: "white" }}>TO</TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      One
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      Two
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      Three
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.timings.map((timing) => (
-                    <TableRow key={timing.date}>
-                      <TableCell component="th" scope="row" align="center" sx={{ color: "white" }}>
-                        {new Date(timing.date).toLocaleDateString("en-US", options)}
-                      </TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>{new Date(timing.from).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>{new Date(timing.to).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</TableCell>
-                    </TableRow>
-                  ))}
+
+                  <TableRow key={data._id}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="center"
+                      sx={{ color: "white" }}
+                    >
+                      {data.preference_1}
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      {data.preference_2}
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      {data.preference_3}
+                    </TableCell>
+                  </TableRow>
+
                 </TableBody>
               </Table>
             </Box>
           </Collapse>
         </TableCell>
       </TableRow>
+
+
+
+
+
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 6 }}>
+              <Typography
+                variant="h6"
+                gutterBottom
+                component="div"
+                sx={{ color: "white" }}
+              >
+                Booking Timings
+              </Typography>
+              <Table
+                size="medium"
+                sx={{ margin: "auto", width: "70%", align: "center" }}
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      DATE
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      FROM
+                    </TableCell>
+                    <TableCell align="center" sx={{ color: "white" }}>
+                      TO
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow key={data._id}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        align="center"
+                        sx={{ color: "white" }}
+                      >
+                        {new Date(data.date).toLocaleDateString(
+                          "en-US",
+                          options
+                        )}
+                      </TableCell>
+                      <TableCell align="center" sx={{ color: "white" }}>
+                        {new Date(data.timefrom).toLocaleString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true
+                        })}
+                      </TableCell>
+                      <TableCell align="center" sx={{ color: "white" }}>
+                        {new Date(data.timeto).toLocaleString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+
+      
+
+
+
+
+      
     </React.Fragment>
   );
 }
 
-// Row.propTypes = {
-//   row: PropTypes.shape({
-//     calories: PropTypes.number.isRequired,
-//     carbs: PropTypes.number.isRequired,
-//     fat: PropTypes.number.isRequired,
-//     history: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         amount: PropTypes.number.isRequired,
-//         customerId: PropTypes.string.isRequired,
-//         date: PropTypes.string.isRequired,
-//       }),
-//     ).isRequired,
-//     name: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired,
-//     protein: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
+
 
 export default function CollapsibleTable() {
+ 
+  const userId = isAutheticated() && isAutheticated().user._id;
+  const token = isAutheticated() && isAutheticated().token;
+  const [d, setD] = useState([]);
+  
+  
+  
+  useEffect(() => {
+    const getdata= async () => {
+      const res = await axios.get(`${API}/requests/${userId}`);
+      setD(res)
+      // console.log(res);
+    }
+    getdata();
+  }, [userId]);
+
+  
+
 
   return (
+    (isAutheticated() && isAutheticated().user.role === 0) ? (
     <>
       <Navbar />
       <Text text="My Requests" />
@@ -183,20 +307,24 @@ export default function CollapsibleTable() {
                 <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }}>TIMINGS</TableCell>
                 <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }}>CAPACITY</TableCell>
                 <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }} >DESCRIPTION </TableCell>
-                <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }}>Preference 1</TableCell>
-                <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }}>Preference 2</TableCell>
-                <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }}>Preference 3</TableCell>
+                <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }} >STATUS </TableCell>
+                <TableCell align="center" sx={{ color: "white", fontSize: "1.3em" }} >APPROVED HALL</TableCell>
+               
               </TableRow>
             </TableHead>
             <TableBody >
-              {rows.map((row) => (
-                <Row key={row.capacity} row={row} />
+              {d.data && d.data.slice(0).reverse().map((data) => (
+                <Row key={data._id} data={data} />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
-    </>
+    </>) : (
+      <Redirect to={{
+        pathname : '/signin'
+    }}></Redirect>
+    )
 
   );
 }

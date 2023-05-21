@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { signup } from "../helper";
 import { InputLabel, Typography } from "@mui/material";
 import "./Signup.css";
@@ -25,6 +25,7 @@ const Signup = () => {
   // const [values, setValues] = useState({
   //   name: "",
   //   email: "",
+   
   //   password: "",
   //   error: "",
   //   success: false,
@@ -60,13 +61,11 @@ const Signup = () => {
   const onSubmit = (doc, event) => {
     event.preventDefault();
 
-    console.log(doc);
 
     signup(doc)
-      .then((data) => {
-        console.log(data)
-        if (data.error) {
-          setStatus({ error: data.error, success: false });
+      .then((data) => {   
+        if (data.code) {
+          setStatus({ error: "Email already exists", success: false });
         } else {
           setValue("name", "");
           setValue("email", "");
@@ -95,14 +94,14 @@ const Signup = () => {
 
         <input
           placeholder="Name"
-          autocomplete="off"
+          autoComplete="off"
           {...register("name", { required: "* Name is required" })}
         />
         <p>{errors.name?.message}</p>
 
         <input
           placeholder="Email"
-          autocomplete="off"
+          autoComplete="off"
           // onChange={handleChange("email")}
           type="email"
           // value={email}
@@ -113,7 +112,7 @@ const Signup = () => {
 
         <input
           placeholder="Phone Number"
-          autocomplete="off"
+          autoComplete="off"
           type="number"
           {...register("phone_number", { required: "* Phone No. is required" })}
         />
@@ -219,7 +218,7 @@ const Signup = () => {
         <input
           placeholder="Password"
           type="password"
-          autocomplete="off"
+          autoComplete="off"
           {...register("password", {
             required: "* Password is required",
             minLength: {
@@ -231,21 +230,20 @@ const Signup = () => {
         <p>{errors.password?.message}</p>
 
         <button type="submit">SignUp</button>
+        
+        <div>
+          <div style={{ display: error ? "" : "none" }}><p>{error}</p></div>
+        </div>
+
+        <p style={{ color: 'rgb(255, 199, 46)'}}>Already registered?&nbsp;&nbsp;<Link to='/signin'><span style={{'textDecoration':'underline'}}>SignIn</span></Link></p>
       </form>
     );
   };
 
   const successMessage = () => {
-    return (
-      <div>
-        <div>
-          <div style={{ display: success ? "" : "none" }}>
-            New account was created successfully. Please
-            <Link to="/signin">Login Here</Link>
-          </div>
-        </div>
-      </div>
-    );
+    if(success===true){
+       window.location.href='/request';
+    }
   };
 
   const errorMessage = () => {
@@ -261,7 +259,7 @@ const Signup = () => {
   return (
     <>
       {successMessage()}
-      {errorMessage()}
+      {/* {errorMessage()} */}
       {signUpForm()}
     </>
   );

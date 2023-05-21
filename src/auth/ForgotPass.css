@@ -1,0 +1,77 @@
+
+
+.forgotpass-form{
+    /* display:flex;
+    flex-direction:column;
+    justify-content:space-between; */
+    width:380px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border:2px solid white;
+    border-radius:24px;
+    padding:2em;
+    text-align: center;
+    display: block;
+    outline: none;
+    margin:10px;
+}
+
+.forgotpass-form input{
+    background:none;
+    border:2px solid white;
+    border-radius:12px;
+    /* padding: 20px 10px; */
+    font-size:1rem;
+    /* margin:20px auto; */
+    margin: 10px auto;
+  padding: 15px 10px;
+  width: 280px;
+  transition: 0.25s;
+  color:white;
+  text-align: center;
+
+}
+
+.forgotpass-form input:focus{
+    width:350px;
+    border:2px solid white;
+    outline:none;
+}
+
+.forgotpass-form button{
+    background:none;
+    -webkit-border-radius: 6;
+    -moz-border-radius: 6;
+    border-radius: 16px;
+    font-family: "Ubuntu";
+    color: #ffffff;
+    font-size: 1.3rem;
+    width:150px;
+    padding: 15px 21px 16px 21px;
+    border: solid #ffffff 2px;
+    text-decoration: none;
+    transition: 0.25s;
+    cursor:pointer;
+    margin:20px auto;
+    margin-top: 30px;
+}
+  
+  .forgotpass-form button:hover {
+    background:none;
+    text-decoration: none;
+    width:170px;
+  }
+
+  .forgotpass-form input[type=number]::-webkit-inner-spin-button, 
+  .forgotpass-form input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0; 
+  }
+
+  .forgotpass-form p{
+    color:rgba(255, 74, 74, 0.849);
+  }

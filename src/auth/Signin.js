@@ -6,10 +6,7 @@ import { Typography } from "@mui/material";
 import "./Signin.css";
 import { useForm } from "react-hook-form";
 
-
-
 const Signin = () => {
-
   const {
     register,
     formState: { errors },
@@ -17,7 +14,11 @@ const Signin = () => {
     setValue,
   } = useForm();
 
-  const [values, setStatus] = useState({error:"",loading:false,didRedirect:false});
+  const [values, setStatus] = useState({
+    error: "",
+    loading: false,
+    didRedirect: false,
+  });
 
   // const [values, setValues] = useState({
   //   email: "",
@@ -27,7 +28,7 @@ const Signin = () => {
   //   didRedirect: false
   // });
 
-  const {error, loading, didRedirect } = values;
+  const { error, loading, didRedirect } = values;
   const { user } = isAutheticated();
 
   // const handleChange = name => event => {
@@ -37,20 +38,20 @@ const Signin = () => {
   // const onSubmit = event => {
   //   event.preventDefault();
   //   setValues({ ...values, error: false, loading: true });
-    // signin({ email, password })
-    //   .then(data => {
-    //     if (data.error) {
-    //       setValues({ ...values, error: data.error, loading: false });
-    //     } else {
-    //       authenticate(data, () => {
-    //         setValues({
-    //           ...values,
-    //           didRedirect: true
-    //         });
-    //       });
-    //     }
-    //   })
-    //   .catch(console.log("signin request failed"));
+  // signin({ email, password })
+  //   .then(data => {
+  //     if (data.error) {
+  //       setValues({ ...values, error: data.error, loading: false });
+  //     } else {
+  //       authenticate(data, () => {
+  //         setValues({
+  //           ...values,
+  //           didRedirect: true
+  //         });
+  //       });
+  //     }
+  //   })
+  //   .catch(console.log("signin request failed"));
   // };
 
   const onSubmit = (doc, event) => {
@@ -59,25 +60,23 @@ const Signin = () => {
     console.log(doc);
 
     signin(doc)
-    .then(data => {
-      if (data.error) {
-        setStatus({...values, error:data.error, loading:false});
-      } else {
-        authenticate(data, () => {
-          setStatus({
-            ...values,
-            didRedirect: true
+      .then((data) => {
+        if (data.error) {
+          setStatus({ ...values, error: data.error, loading: false });
+        } else {
+          authenticate(data, () => {
+            setStatus({
+              ...values,
+              didRedirect: true,
+            });
+            setValue("email", "");
+            setValue("password", "");
           });
-          setValue("email", "");
-          setValue("password", "");
-        });
-      }
-    })
-    .catch(console.log("signin request failed"));
-
+          window.location.href = "/";
+        }
+      })
+      .catch(console.log("signin request failed"));
   };
-
-
 
   const performRedirect = () => {
     //TODO: do a redirect here
@@ -118,10 +117,10 @@ const Signin = () => {
     );
   };
 
-
   const signInForm = () => {
     return (
-     <form onSubmit={handleSubmit(onSubmit)} className="signin-form">
+      <>
+      <form onSubmit={handleSubmit(onSubmit)} className="signin-form">
         <Typography
           variant="h3"
           sx={{ color: "white", fontFamily: "Ubuntu", margin: "22px auto" }}
@@ -129,10 +128,9 @@ const Signin = () => {
           Sign In
         </Typography>
 
-
         <input
           placeholder="Email"
-          autocomplete="off"
+          autoComplete="off"
           // onChange={handleChange("email")}
           type="email"
           // value={email}
@@ -143,24 +141,36 @@ const Signin = () => {
 
         <input
           placeholder="Password"
-          autocomplete="off"
+          autoComplete="off"
           type="password"
           {...register("password", { required: "* Password is required" })}
         />
         <p>{errors.password?.message}</p>
 
-            <button type="submit">
-              Sign In
-            </button>
-          </form>
+        <button type="submit">Sign In</button>
 
+
+          <div
+            className="alert alert-danger"
+            style={{ display: error ? "" : "none" }}
+          >
+            <p>{error}</p>
+          </div>
+
+      
+
+        <p style={{ color: 'rgb(255, 199, 46)'}}>Do not have an account yet?&nbsp;&nbsp;<Link to='/signup'><span style={{'textDecoration':'underline'}}>SignUp</span></Link></p>
+        <p ><Link to='/emailInput'><span style={{'text-decoration':'underline', 'color': 'red'}}>Forgot Password?</span></Link></p>
+      </form>
+      
+      </>
     );
   };
 
   return (
     <>
-      {loadingMessage()}
-      {errorMessage()}
+      {/* {loadingMessage()} */}
+      {/* {errorMessage()} */}
       {signInForm()}
       {performRedirect()}
       {/* <p className="text-white text-center">{JSON.stringify(values)}</p> */}
